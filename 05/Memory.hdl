@@ -27,13 +27,11 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-    Memory(in=in, load=load, address=address, out=in);
-    Not(in=address[14], out=loadRAM);
-    RAM16K(in=in, load=loadRAM, address=address[0..13], out=outram);    
+    RAM16K(in=in, load=load, address=address[0..13], out=outram);    
     And(a=address[13], b=address[14],out=loadKeyboard);
     Keyboard(out=outkey);
-    Or(a=loadRAM,b=loadKeyboard,out=notScreen);
+    Or(a=load,b=loadKeyboard,out=notScreen);
     Not(in=notScreen,out=loadScreen);
     Screen(in=in,load=loadScreen,address=address[0..12],out=outscreen);
-    Mux4Way16(a=outscreen, b=outram, c=outkey, d=outram, sel[0]=loadRAM,sel[1]=loadKeyboard, out=out);
+    Mux4Way16(a=outscreen, b=outram, c=outkey, d=outram, sel[0]=load,sel[1]=loadKeyboard, out=out);
 }
